@@ -2,12 +2,15 @@
 **Project:** VaultFlow (FinTracker-Offline)
 **Goal:** Track architectural decisions and Flutter concepts learned.
 
-## [2023-12-01] The "Privacy & Process" Pivot
-* **Lesson Learned (Documentation Integrity):** The AI previously diluted the "North Star" requirements.
-    * **Rule Established:** The Roadmap sections (specifically Offline Chat and Offline Analytics) are **SACRED**. They must never be summarized or removed from the Master Context.
-* **Concept:** **Human-in-the-Loop Architecture**. We acknowledged that AI/Regex isn't perfect. We need a "Pending Queue" for the user to handle edge cases.
-* **Decisions:**
-    1.  **Zero Internet:** The app is strictly offline. Security is paramount.
-    2.  **Retroactive Sync:** When a user creates a rule, we immediately fix *past* data.
-    3.  **Silent Listener:** Moving away from "Sync Button" to "Background Service".
-* **Status:** Roadmap updated. Ready to build Phase 2.
+## [2025-12-01] Google Play Compliance Strategy
+* **Decision:** To survive Google Play's `READ_SMS` restrictions, we have "LOCKED" the release strategy into the Master Context.
+* **Key Constraints:**
+    1.  **Gatekeeper:** We must position the app as "SMS-based money management" (Exception Category).
+    2.  **User-Initiated Scan:** Historical SMS scanning MUST be triggered by a user button, never automatically on startup.
+    3.  **Video Evidence:** We must record the exact "Permission -> Value" flow for the store review.
+* **Impact:** The "Account Discovery" feature is now architected as an On-Demand Service, not a startup job.
+
+## [2025-12-01] Correction & Reinforcement
+* **Error:** AI attempted to summarize/replace "Account Linking" with "Account Discovery" and shortened the "Sacred" warning text.
+* **Correction:** Restored the specific "Account Linking" line and the full "Sacred" warning text to the PMS.
+* **Rule Reinforced:** **ZERO DILUTION**. Do not remove or rephrase the North Star requirements (Offline Chat/Analytics) or specific roadmap items unless explicitly told to delete them.
