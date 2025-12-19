@@ -42,8 +42,23 @@ const AccountSchema = CollectionSchema(
       name: r'name',
       type: IsarType.string,
     ),
-    r'type': PropertySchema(
+    r'senderId': PropertySchema(
       id: 5,
+      name: r'senderId',
+      type: IsarType.string,
+    ),
+    r'statementDate': PropertySchema(
+      id: 6,
+      name: r'statementDate',
+      type: IsarType.long,
+    ),
+    r'totalCreditLimit': PropertySchema(
+      id: 7,
+      name: r'totalCreditLimit',
+      type: IsarType.double,
+    ),
+    r'type': PropertySchema(
+      id: 8,
       name: r'type',
       type: IsarType.string,
     )
@@ -76,6 +91,12 @@ int _accountEstimateSize(
     }
   }
   bytesCount += 3 + object.name.length * 3;
+  {
+    final value = object.senderId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.type.length * 3;
   return bytesCount;
 }
@@ -91,7 +112,10 @@ void _accountSerialize(
   writer.writeDouble(offsets[2], object.initialBalance);
   writer.writeString(offsets[3], object.lastFourDigits);
   writer.writeString(offsets[4], object.name);
-  writer.writeString(offsets[5], object.type);
+  writer.writeString(offsets[5], object.senderId);
+  writer.writeLong(offsets[6], object.statementDate);
+  writer.writeDouble(offsets[7], object.totalCreditLimit);
+  writer.writeString(offsets[8], object.type);
 }
 
 Account _accountDeserialize(
@@ -107,7 +131,10 @@ Account _accountDeserialize(
   object.initialBalance = reader.readDouble(offsets[2]);
   object.lastFourDigits = reader.readStringOrNull(offsets[3]);
   object.name = reader.readString(offsets[4]);
-  object.type = reader.readString(offsets[5]);
+  object.senderId = reader.readStringOrNull(offsets[5]);
+  object.statementDate = reader.readLongOrNull(offsets[6]);
+  object.totalCreditLimit = reader.readDoubleOrNull(offsets[7]);
+  object.type = reader.readString(offsets[8]);
   return object;
 }
 
@@ -129,6 +156,12 @@ P _accountDeserializeProp<P>(
     case 4:
       return (reader.readString(offset)) as P;
     case 5:
+      return (reader.readStringOrNull(offset)) as P;
+    case 6:
+      return (reader.readLongOrNull(offset)) as P;
+    case 7:
+      return (reader.readDoubleOrNull(offset)) as P;
+    case 8:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -813,6 +846,305 @@ extension AccountQueryFilter
     });
   }
 
+  QueryBuilder<Account, Account, QAfterFilterCondition> senderIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'senderId',
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> senderIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'senderId',
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> senderIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'senderId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> senderIdGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'senderId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> senderIdLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'senderId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> senderIdBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'senderId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> senderIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'senderId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> senderIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'senderId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> senderIdContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'senderId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> senderIdMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'senderId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> senderIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'senderId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> senderIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'senderId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> statementDateIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'statementDate',
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition>
+      statementDateIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'statementDate',
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> statementDateEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'statementDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition>
+      statementDateGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'statementDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> statementDateLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'statementDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> statementDateBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'statementDate',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition>
+      totalCreditLimitIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'totalCreditLimit',
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition>
+      totalCreditLimitIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'totalCreditLimit',
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> totalCreditLimitEqualTo(
+    double? value, {
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'totalCreditLimit',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition>
+      totalCreditLimitGreaterThan(
+    double? value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'totalCreditLimit',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition>
+      totalCreditLimitLessThan(
+    double? value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'totalCreditLimit',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> totalCreditLimitBetween(
+    double? lower,
+    double? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'totalCreditLimit',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
   QueryBuilder<Account, Account, QAfterFilterCondition> typeEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -1011,6 +1343,42 @@ extension AccountQuerySortBy on QueryBuilder<Account, Account, QSortBy> {
     });
   }
 
+  QueryBuilder<Account, Account, QAfterSortBy> sortBySenderId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'senderId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> sortBySenderIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'senderId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> sortByStatementDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'statementDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> sortByStatementDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'statementDate', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> sortByTotalCreditLimit() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'totalCreditLimit', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> sortByTotalCreditLimitDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'totalCreditLimit', Sort.desc);
+    });
+  }
+
   QueryBuilder<Account, Account, QAfterSortBy> sortByType() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'type', Sort.asc);
@@ -1098,6 +1466,42 @@ extension AccountQuerySortThenBy
     });
   }
 
+  QueryBuilder<Account, Account, QAfterSortBy> thenBySenderId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'senderId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> thenBySenderIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'senderId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> thenByStatementDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'statementDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> thenByStatementDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'statementDate', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> thenByTotalCreditLimit() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'totalCreditLimit', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> thenByTotalCreditLimitDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'totalCreditLimit', Sort.desc);
+    });
+  }
+
   QueryBuilder<Account, Account, QAfterSortBy> thenByType() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'type', Sort.asc);
@@ -1147,6 +1551,25 @@ extension AccountQueryWhereDistinct
     });
   }
 
+  QueryBuilder<Account, Account, QDistinct> distinctBySenderId(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'senderId', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Account, Account, QDistinct> distinctByStatementDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'statementDate');
+    });
+  }
+
+  QueryBuilder<Account, Account, QDistinct> distinctByTotalCreditLimit() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'totalCreditLimit');
+    });
+  }
+
   QueryBuilder<Account, Account, QDistinct> distinctByType(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1190,6 +1613,24 @@ extension AccountQueryProperty
   QueryBuilder<Account, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
+    });
+  }
+
+  QueryBuilder<Account, String?, QQueryOperations> senderIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'senderId');
+    });
+  }
+
+  QueryBuilder<Account, int?, QQueryOperations> statementDateProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'statementDate');
+    });
+  }
+
+  QueryBuilder<Account, double?, QQueryOperations> totalCreditLimitProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'totalCreditLimit');
     });
   }
 

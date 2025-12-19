@@ -18,6 +18,12 @@ class Account {
 
   late String colorHex;
 
+  String? senderId;
+
+  double? totalCreditLimit;
+
+  int? statementDate;
+
   Account();
 
   factory Account.fromJson(Map<String, dynamic> json) {
@@ -28,7 +34,10 @@ class Account {
       ..lastFourDigits = json['lastFourDigits'] as String?
       ..initialBalance = (json['initialBalance'] as num).toDouble()
       ..currentBalance = (json['currentBalance'] as num).toDouble()
-      ..colorHex = json['colorHex'] as String;
+      ..colorHex = json['colorHex'] as String
+      ..senderId = json['senderId'] as String?
+      ..totalCreditLimit = (json['totalCreditLimit'] as num?)?.toDouble()
+      ..statementDate = json['statementDate'] as int?;
   }
 
   Map<String, dynamic> toJson() {
@@ -40,6 +49,9 @@ class Account {
       'initialBalance': initialBalance,
       'currentBalance': currentBalance,
       'colorHex': colorHex,
+      'senderId': senderId,
+      'totalCreditLimit': totalCreditLimit,
+      'statementDate': statementDate,
     };
   }
 }
